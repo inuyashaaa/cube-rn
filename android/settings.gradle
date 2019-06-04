@@ -1,0 +1,3 @@
+rootProject.name = 'cube_navigation'
+
+include ':app'
