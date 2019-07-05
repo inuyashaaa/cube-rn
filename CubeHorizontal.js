@@ -33,7 +33,8 @@ export default class CubeNavigationHorizontal extends React.Component {
     if (animated) {
       Animated.timing(this._animatedValue, {
         toValue: { x: this.pages[page], y: 0 },
-        duration: 1200
+        duration: 750,
+        useNativeDriver: true
       }).start();
     } else {
       this._animatedValue.setValue({ x: this.pages[page], y: 0 });
@@ -124,18 +125,17 @@ export default class CubeNavigationHorizontal extends React.Component {
   };
 
   render() {
+    console.log('================================================');
+    console.log('this.props', this.props);
+    console.log('================================================');
     return (
-      <Animated.View
-        style={[{ position: "absolute" }]}
+      <View
+        style={[
+          { backgroundColor: "transparent", position: "absolute", width, height },
+        ]}
       >
-        <Animated.View
-          style={[
-            { backgroundColor: "transparent", position: "absolute", width, height },
-          ]}
-        >
-          {this.props.children.map(this._renderChild)}
-        </Animated.View>
-      </Animated.View>
+        {this.props.children.map(this._renderChild)}
+      </View>
     );
   }
 }

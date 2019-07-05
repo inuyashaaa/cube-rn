@@ -7,7 +7,7 @@ import {
   Image,
   View,
   Text,
-  TouchableWithoutFeedback
+  TouchableOpacity
 } from "react-native";
 import CubeNavigationHorizontal from "./CubeHorizontal";
 
@@ -16,83 +16,88 @@ const { width, height } = Dimensions.get("window");
 export default class CubeHorizontal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      move: new Animated.Value(600)
-    };
+
+    this.animatedScale = new Animated.Value(0.8)
   }
 
   goToNext = (index = 1) => {
     this.cube.scrollTo(index);
+    Animated.timing(this.animatedScale, {
+      toValue: 1,
+      duration: 750,
+      useNativeDriver: true
+    }).start()
   };
 
   render() {
     return (
-      <View style={{ flex: 1, paddingTop: 100 }}>
-      <View style={styles.father}>
-        <CubeNavigationHorizontal
-          ref={view => {
-            this.cube = view;
-          }}
-        >
-          <View style={[styles.container, { backgroundColor: "#A3F989" }]}>
-            <Image source={require("./assets/02.png")} style={styles.image} />
-            <Text style={[styles.text, { color: "#fff", paddingBottom: 20 }]}>
-              Screen A
-            </Text>
-            <TouchableWithoutFeedback onPress={() => this.goToNext(1)}>
-              <View
-                style={{
-                  width: width - width / 2.5,
-                  paddingTop: 15,
-                  paddingBottom: 15,
-                  marginBottom: 30,
-                  borderWidth: 2,
-                  borderColor: "#fff",
-                  borderRadius: 100
-                }}
-              >
-                <Text
-                  style={[
-                    styles.text,
-                    { fontSize: 18, textAlign: "center", color: "#fff" }
-                  ]}
+      <View style={{ flex: 1 }}>
+        <Animated.View style={[{
+          transform: [{
+            scale: this.animatedScale
+          },]
+        }]}>
+          <CubeNavigationHorizontal
+            ref={view => {
+              this.cube = view;
+            }}
+            style={{ flex:1, backgroundColor: 'red' }}
+          >
+            <View style={[styles.container]}>
+              <Image source={require("./assets/02.png")} style={styles.image} />
+              <Text style={[styles.text, { color: "#fff", paddingBottom: 20 }]}>Screen A</Text>
+              <TouchableOpacity onPress={() => this.goToNext(1)}>
+                <View
+                  style={{
+                    width: width - width / 2.5,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    marginBottom: 30,
+                    borderWidth: 2,
+                    borderColor: "#fff",
+                    borderRadius: 100
+                  }}
                 >
-                  Go to B
+                  <Text
+                    style={[
+                      styles.text,
+                      { fontSize: 18, textAlign: "center", color: "#fff" }
+                    ]}
+                  >
+                    Go to B
                 </Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-          <View style={[styles.container, { backgroundColor: "#CBF941" }]}>
-            <Image source={require("./assets/01.png")} style={styles.image} />
-            <Text style={[styles.text, { paddingBottom: 80 }]}>
-              Screen B
-            </Text>
-            <TouchableWithoutFeedback onPress={() => this.goToNext(0)}>
-              <View
-                style={{
-                  width: width - width / 2.5,
-                  paddingTop: 15,
-                  paddingBottom: 15,
-                  marginBottom: 30,
-                  borderWidth: 2,
-                  borderColor: "#fff",
-                  borderRadius: 100
-                }}
-              >
-                <Text
-                  style={[
-                    styles.text,
-                    { fontSize: 18, textAlign: "center", color: "#fff" }
-                  ]}
+            <View style={[styles.container]}>
+              <Image source={require("./assets/01.png")} style={styles.image} />
+              <Text style={[styles.text, { paddingBottom: 80 }]}>Screen B</Text>
+              <TouchableOpacity onPress={() => this.goToNext(0)}>
+                <View
+                  style={{
+                    width: width - width / 2.5,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    marginBottom: 30,
+                    borderWidth: 2,
+                    borderColor: "#fff",
+                    borderRadius: 100
+                  }}
                 >
-                  Go to A
+                  <Text
+                    style={[
+                      styles.text,
+                      { fontSize: 18, textAlign: "center", color: "#fff" }
+                    ]}
+                  >
+                    Go to A
                 </Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </CubeNavigationHorizontal>
-      </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </CubeNavigationHorizontal>
+        </Animated.View>
       </View>
 
     );
@@ -101,11 +106,10 @@ export default class CubeHorizontal extends React.Component {
 
 const styles = StyleSheet.create({
   father: {
-    transform: [ { 
-      scale: 0.8
-    }]
+
   },
   container: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center"
   },
